@@ -7,11 +7,17 @@
 
 import Foundation
 
+public protocol NFXHTTPModelManagerDelegate: AnyObject {
+    func nfxHTTPModelManagerShouldAdd(_ model: NFXHTTPModel) -> Bool
+    func nfxHTTPModelManagerWillAdd(_ model: NFXHTTPModel)
+}
+
 
 final class NFXHTTPModelManager: NSObject {
     
     static let shared = NFXHTTPModelManager()
     
+    weak var delegate: NFXHTTPModelManagerDelegate?
     let publisher = Publisher<[NFXHTTPModel]>()
        
     /// Not thread safe. Use only from main thread/queue
@@ -37,6 +43,8 @@ final class NFXHTTPModelManager: NSObject {
     /// Thread safe
     func add(_ obj: NFXHTTPModel) {
         DispatchQueue.main.async {
+            guard self.delegate?.nfxHTTPModelManagerShouldAdd(obj) ?? false else { return }
+            self.delegate?.nfxHTTPModelManagerWillAdd(obj)
             self.models.insert(obj, at: 0)
         }
     }

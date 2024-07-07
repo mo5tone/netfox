@@ -20,6 +20,8 @@ private func podPlistVersion() -> String? {
 // TODO: Carthage support
 let nfxVersion = podPlistVersion() ?? "0"
 
+public protocol NFXDelegate: NFXHTTPModelManagerDelegate {}
+
 @objc
 open class NFX: NSObject {
     
@@ -51,6 +53,11 @@ open class NFX: NSObject {
     fileprivate var lastVisitDate: Date = Date()
     
     internal var cacheStoragePolicy = URLCache.StoragePolicy.notAllowed
+    public weak var delegate: NFXDelegate? {
+        didSet {
+            NFXHTTPModelManager.shared.delegate = delegate
+        }
+    }
     
     // swiftSharedInstance is not accessible from ObjC
     class var swiftSharedInstance: NFX {
