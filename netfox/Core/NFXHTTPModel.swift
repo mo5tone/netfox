@@ -181,11 +181,11 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     
     @objc public func getTimeFromDate(_ date: Date) -> String? {
         let calendar = Calendar.current
-        let components = (calendar as NSCalendar).components([.hour, .minute, .second], from: date)
-        guard let hour = components.hour, let minutes = components.minute, let seconds = components.second else {
+        let components = (calendar as NSCalendar).components([.minute, .second], from: date)
+        guard let minutes = components.minute, let seconds = components.second else {
             return nil
         }
-        return String(format: "%\02d%\02d:%\02d", hour, minutes, seconds)
+        return String(format: "%02d:%02d", minutes, seconds)
     }
     
     public func prettyPrint(_ rawData: Data, type: HTTPModelShortType) -> String? {

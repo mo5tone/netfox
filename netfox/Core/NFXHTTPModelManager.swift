@@ -43,7 +43,7 @@ final class NFXHTTPModelManager: NSObject {
     /// Thread safe
     func add(_ obj: NFXHTTPModel) {
         DispatchQueue.main.async {
-            guard self.delegate?.nfxHTTPModelManagerShouldAdd(obj) ?? false else { return }
+            guard self.delegate?.nfxHTTPModelManagerShouldAdd(obj) ?? true else { return }
             self.delegate?.nfxHTTPModelManagerWillAdd(obj)
             self.models.insert(obj, at: 0)
         }
